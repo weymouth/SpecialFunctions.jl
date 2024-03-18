@@ -181,7 +181,7 @@ function En_cf_nogamma(ν::Number, z::Number, n::Int=1000)
         A, Aprev = A + (ν+i-1) * Aprev, A
         B, Bprev = B + (ν+i-1) * Bprev, B
 
-        i > 4 && abs(Aprev*B - A*Bprev) < ϵ*abs(B*Bprev) && break
+        i > 4 && fastabs(Aprev*B - A*Bprev) < ϵ*fastabs(B*Bprev) && break
 
         # rescale
         if fastabs(A) > scale
@@ -224,7 +224,7 @@ function En_cf_gamma(ν::Number, z::Number, n::Int=1000)
         A, Aprev = b*A + a*Aprev, A
         B, Bprev = b*B + a*Bprev, B
 
-        if abs(Aprev*B - A*Bprev) < ϵ*abs(Aprev*B)
+        if fastabs(Aprev*B - A*Bprev) < ϵ*fastabs(Aprev*B)
             break
         end
 
@@ -270,7 +270,7 @@ function En_taylor(ν::Number, start::Number, z₀::Number, Δ::Number)
         asum_prev = asum
         asum += a
 
-        if abs(asum_prev - asum) < ϵ
+        if fastabs(asum_prev - asum) < ϵ
             break
         end
 
@@ -298,7 +298,7 @@ function En_expand_origin_general(ν::Number, z::Number, niter::Integer)
             blowup += frac / (k + 1 - ν)
         else
             sumterm += frac / (k + 1 - ν)
-            if abs(sumterm - prev) < ε*abs(prev)
+            if fastabs(sumterm - prev) < ε*fastabs(prev)
                 break
             end
         end
@@ -359,7 +359,7 @@ function En_expand_origin_posint(n, z::Number, niter::Integer)
         if k != n-1
             prev = sumterm
             sumterm += frac / (k + 1 - n)
-            if abs(sumterm - prev) < ϵ
+            if fastabs(sumterm - prev) < ϵ
                 break
             end
         end
